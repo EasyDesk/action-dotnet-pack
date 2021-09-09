@@ -1,0 +1,33 @@
+name: Create Nuget Packages
+description: Creates a Nuget packages from compiled sources
+
+branding:
+  color: blue
+  icon: package
+
+inputs:
+  project-names:
+    description: List of project names to pack separately.
+    required: true
+  package-version:
+    description: Version of the Nuget packages.
+    required: false
+    default: 0.0.0
+  output-dir:
+    description: Directory where all packages will be put (default value is 'packages').
+    required: false
+    default: packages
+  build-configuration:
+    description: Build configuration for the build (default value is 'Release').
+    required: false
+    default: Release
+
+runs:
+  using: composite
+  steps:
+    - name: Create Nuget packages
+      shell: bash
+      run: |
+        for PROJECT_NAME in ${{ join(fromJSON(inputs.project-names), ' ') }} ; do
+          dotnet pack ${PROJECT_NAME} --no-build -o "${{ inputs.output-dir }}" -c "${{ inputs.build-configuration }}" -p:Version="${{ inputs.package-version }}"
+        done
