@@ -28,6 +28,6 @@ runs:
     - name: Create Nuget packages
       shell: bash
       run: |
-        for PROJECT_NAME in ${{ join(fromJSON(inputs.project-names), ' ') }} ; do
-          dotnet pack ${PROJECT_NAME} --no-build -o "${{ inputs.output-dir }}" -c "${{ inputs.build-configuration }}" -p:Version="${{ inputs.package-version }}"
+        for PROJECT_NAME in ${{ inputs.project-names }} ; do
+          dotnet pack "${PROJECT_NAME}" --no-build -o "${{ inputs.output-dir }}" -c "${{ inputs.build-configuration }}" -p:Version="${{ inputs.package-version }}"
         done
