@@ -11,8 +11,7 @@ inputs:
     required: true
   package-version:
     description: Version of the Nuget packages.
-    required: false
-    default: 0.0.0
+    required: true
   output-dir:
     description: Directory where all packages will be put (default value is 'packages').
     required: false
