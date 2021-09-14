@@ -31,7 +31,12 @@ runs:
     - name: Create Nuget packages
       shell: bash
       run: |
-        ARGS="-o ${{ inputs.output-dir }} -c ${{ inputs.build-configuration }} -p:Version=${{ inputs.package-version }}"
+        if [[ "${{ inputs.package-version }}" =~ ^v(.+)$ ]] ; then
+          VERSION=${BASH_REMATCH[1]}
+        else
+          VERSION=${{ inputs.package-version }}
+        fi
+        ARGS="-o ${{ inputs.output-dir }} -c ${{ inputs.build-configuration }} -p:Version=${VERSION}"
         if [[ "${{ inputs.skip-build }}" == "true" ]] ; then
           ARGS="${ARGS} --no-build"
         fi
