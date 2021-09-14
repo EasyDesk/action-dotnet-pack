@@ -2,7 +2,9 @@
 An action that can be used to run the `dotnet pack` command on a list of projects, assigning to each of them the same version.
 
 ## Usage
-
+By default, this action requires the build to be up to date for the given `build-configuration`.
+To that purpose, you can use [EasyDesk/action-dotnet-build](https://github.com/EasyDesk/action-dotnet-build).
+Otherwise, you can force a new build with `skip-build: false`.
 
 ### Usage example
 ```yaml
