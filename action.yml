@@ -20,6 +20,10 @@ inputs:
     description: Build configuration for the build (default value is 'Release').
     required: false
     default: Release
+  skip-build:
+    description: Whether to skip the build using the --no-build flag (default value is 'true')
+    required: false
+    default: "true"
 
 runs:
   using: composite
@@ -27,7 +31,11 @@ runs:
     - name: Create Nuget packages
       shell: bash
       run: |
+        ARGS="-o ${{ inputs.output-dir }} -c ${{ inputs.build-configuration }} -p:Version=${{ inputs.package-version }}"
+        if [[ "${{ inputs.skip-build }}" == "true" ]] ; then
+          ARGS="${ARGS} --no-build"
+        fi
         PROJECT_NAMES=`echo "${{ inputs.project-names }}"`
         for PROJECT_NAME in ${PROJECT_NAMES} ; do
-          dotnet pack "${PROJECT_NAME}" --no-build -o "${{ inputs.output-dir }}" -c "${{ inputs.build-configuration }}" -p:Version="${{ inputs.package-version }}"
+          dotnet pack "${PROJECT_NAME}" ${ARGS}
         done
