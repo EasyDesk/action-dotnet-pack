@@ -36,12 +36,11 @@ runs:
         else
           VERSION='${{ inputs.package-version }}'
         fi
-        ARGS='-o "${{ inputs.output-dir }}" -c "${{ inputs.build-configuration }}"'
-        ARGS="${ARGS} -p:Version=${VERSION}"
+        ARGS=""
         if [[ '${{ inputs.skip-build }}' == "true" ]] ; then
           ARGS="${ARGS} --no-build"
         fi
         PROJECT_NAMES=`echo '${{ inputs.project-names }}'`
         for PROJECT_NAME in ${PROJECT_NAMES} ; do
-          dotnet pack "${PROJECT_NAME}" ${ARGS}
+          dotnet pack "${PROJECT_NAME}" -o '${{ inputs.output-dir }}' -c '${{ inputs.build-configuration }}' -p:Version=${VERSION} ${ARGS}
         done
